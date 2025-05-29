@@ -2012,8 +2012,7 @@ def profile_shift_pregearing(material, Possible_solutions_pregearing, m_t_0, m_t
             if bending_stresses_after_PS_0[i] == [0, 0, 0, 0, 0, 0 , 0,0, 0, 0, 0]:
                 a_0 = Possible_solutions_pregearing[i][13]
             else:
-                a_0 = Best_config_0[6]
-            #zoeken naar a original in stage 0 
+                a_0 = Best_config_0[6] #original center distance
             y__1 = abs(a_0-Possible_solutions_pregearing[i][14])/(m_t__1*10**(-3)*np.cos(Possible_solutions_pregearing[i][10]*np.pi/180))
             if a_0 < Possible_solutions_pregearing[i][14]:
                 y__1 = -y__1
@@ -2024,7 +2023,6 @@ def profile_shift_pregearing(material, Possible_solutions_pregearing, m_t_0, m_t
             sum_of_prof_shift__1 = (inv_alpha_wt_min__1-np.tan(np.arctan(np.tan(pressure_angle*math.pi/180)/np.cos(Possible_solutions_pregearing[i][10]*np.pi/180))) + np.arctan(np.tan(pressure_angle*math.pi/180)/np.cos(Possible_solutions_pregearing[i][10]*np.pi/180)))/(2*np.tan(pressure_angle*np.pi/180))*(Possible_solutions_pregearing[i][0] - Possible_solutions_pregearing[i][1]) 
             x_P_1 = -sum_of_prof_shift__1
             step = 0.005
-            print(sum_of_prof_shift__1)
             if sum_of_prof_shift__1 < 0:
                 while x_P_1 >= sum_of_prof_shift__1:
                     x_R_1 = -sum_of_prof_shift__1 - x_P_1
@@ -2152,8 +2150,6 @@ def profile_shift_pregearing(material, Possible_solutions_pregearing, m_t_0, m_t
                 x_P_1 = -sum_of_prof_shift__1
                 if x_P_1 <1-(Possible_solutions_pregearing[i][1]*np.sin(np.arctan(np.tan(pressure_angle*math.pi/180)/np.cos(Possible_solutions_pregearing[i][10]*np.pi/180)))**2)/(2*np.cos(Possible_solutions_pregearing[i][10]*np.pi/180)):
                     x_P_1 = 1-(Possible_solutions_pregearing[i][1]*np.sin(np.arctan(np.tan(pressure_angle*math.pi/180)/np.cos(Possible_solutions_pregearing[i][10]*np.pi/180)))**2)/(2*np.cos(Possible_solutions_pregearing[i][10]*np.pi/180))
-                    # bending_stresses_after_PS_0[i].extend([0,0,0,0,0,0,0,0,0,0,0,0,0])
-                    # exit_inner_loops_second_time = True
                 while x_P_1 <= sum_of_prof_shift__1:
                     x_R_1 = -sum_of_prof_shift__1 - x_P_1
                     XE__1_ext = x_P_1 + Tooth_thickness_allowances[allowances][1]/(2*np.tan(pressure_angle*np.pi/180)*m_t__1*np.cos(Possible_solutions_pregearing[i][10]*np.pi/180))
@@ -2509,14 +2505,11 @@ def calculate_pre_gearing():
         for j in range(24):
             sorted_final_solutions_pregearing[i].append(After_PS[i][j])
 
-    for i in range(len(sorted_final_solutions_pregearing)):  #43 is eerste
+    for i in range(len(sorted_final_solutions_pregearing)):  
         if sorted_final_solutions_pregearing[i][60] > max_diam*10**(-3)/2 - sorted_final_solutions_pregearing[i][1]*m_t__1*10**(-3)/2:
             sorted_final_solutions_pregearing[i].append('After profile shift, the solution does not fit anymore, this is not a good solution!')
         else: 
             sorted_final_solutions_pregearing[i].append('After profile shift, the solution still fits!')
-
-        if sorted_final_solutions_pregearing[i][60] == 0:
-            sorted_final_solutions_pregearing[i].append('This is not a good solution, the profile shift could not be used to comply with the coaxiality condition or to prevent undercutting.')
 
     output_text.insert(tk.END, "\n", "bold")
     output_text.insert(tk.END, f"There are {len(Final_solutions_pregearing)} solutions", "bold")
